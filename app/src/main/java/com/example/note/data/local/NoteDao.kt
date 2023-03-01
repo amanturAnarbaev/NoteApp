@@ -1,6 +1,7 @@
 package com.example.note.data.local
 
 import androidx.room.*
+import com.example.note.data.model.NoteEntity
 
 @Dao
 interface NoteDao {
@@ -8,14 +9,14 @@ interface NoteDao {
     //CRUD
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createNote(noteEntity: NoteEntity)
+    suspend fun createNote(noteEntity: NoteEntity)
 
     @Delete
-    fun deleteNote(noteEntity: NoteEntity)
+    suspend fun deleteNote(noteEntity: NoteEntity)
 
-    @Query("SELECT * FROM notes ")
-    fun getAllNotes(): List<NoteEntity>
+    @Query("SELECT * FROM notes")
+    suspend fun getAllNotes(): List<NoteEntity>
 
     @Update
-    fun editNote(noteEntity: NoteEntity)
+    suspend fun editNote(noteEntity: NoteEntity)
 }
