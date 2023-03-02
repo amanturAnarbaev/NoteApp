@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
+import javax.inject.Inject
 
-class NoteRepositoryImpl(
+
+class NoteRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao
 ) : NoteRepository {
     override fun createNote(note: Note): Flow<ResultStatus<Unit>> = flow {
@@ -23,17 +25,20 @@ class NoteRepositoryImpl(
         } catch (e: IOException) {
             emit(ResultStatus.Error(e.message.toString()))
         }
-        noteDao.createNote(note.toEntity())
     }.flowOn(Dispatchers.IO)
 
 
-    override fun getAllNotes(): List<Note> {
-        return noteDao.getAllNotes().map { it.toNote() }
-        //не понял что делать тут
-
+    override fun getAllNotes(): Flow<ResultStatus<List<Note>>> = flow {
+        emit(ResultStatus.Loading())
+        try {
+            val getAll = noteDao.getAllNotes().map { it.toNote() }
+            emit(ResultStatus.Succes(getAll))
+        } catch (e: IOException) {
+            emit(ResultStatus.Error(e.message.toString()))
+        }
     }
 
-    override fun delete(note: Note): Flow<ResultStatus<Unit>> = flow {
+    override fun delete(note: Note): Flow<ResultStatus<Unit>> = flow<ResultStatus<Unit>> {
         emit(ResultStatus.Loading())
         try {
             val delete = noteDao.deleteNote(note.toEntity())
@@ -41,19 +46,17 @@ class NoteRepositoryImpl(
         } catch (e: IOException) {
             emit(ResultStatus.Error(e.message.toString()))
         }
+    }.flowOn(Dispatchers.IO)
 
-    }
 
-
-    override fun editNote(note: Note): Flow<ResultStatus<Unit>> = flow {
+    override fun editNote(note: Note): Flow<ResultStatus<Unit>> = flow<ResultStatus<Unit>> {
         emit(ResultStatus.Loading())
         try {
             val edit = noteDao.editNote(note.toEntity())
             emit(ResultStatus.Succes(edit))
-        }catch (e:IOException){
+        } catch (e: IOException) {
             emit(ResultStatus.Error(e.message.toString()))
         }
-
-    }
+    }.flowOn(Dispatchers.IO)
 
 }
