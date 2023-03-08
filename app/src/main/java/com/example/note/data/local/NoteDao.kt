@@ -5,7 +5,6 @@ import com.example.note.data.model.NoteEntity
 
 @Dao
 interface NoteDao {
-
     //CRUD
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
