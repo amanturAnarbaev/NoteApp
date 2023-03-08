@@ -6,12 +6,6 @@ import com.example.note.data.mappers.toEntity
 import com.example.note.data.mappers.toNote
 import com.example.note.domain.model.Note
 import com.example.note.domain.repository.NoteRepository
-import com.example.note.domain.utils.ResultStatus
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import java.io.IOException
 import javax.inject.Inject
 
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.note.R
 import com.example.note.databinding.FragmentNotesBinding
 import kotlinx.coroutines.flow.collect
@@ -20,6 +21,11 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNotesBinding.bind(view)
+
+        val meneger = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recycler.layoutManager = meneger
+
+        listeners()
     }
 
     private fun listeners() {
