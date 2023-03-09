@@ -1,30 +1,22 @@
 package com.example.note.presentaion.fillingNotes
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.fragment.app.viewModels
+import com.example.note.data.base.BaseFragment
 import com.example.note.databinding.FragmentFillingNotesBinding
 
-class FillingNotesFragment : Fragment() {
+class FillingNotesFragment : BaseFragment<FillingNotesViewModel, FragmentFillingNotesBinding>() {
+    override val vm: FillingNotesViewModel by viewModels()
+    override val binding: FragmentFillingNotesBinding =
+        FragmentFillingNotesBinding.inflate(layoutInflater)
 
-    private lateinit var viewModel: FillingNotesViewModel
-    private lateinit var binding: FragmentFillingNotesBinding
+    override fun setupRequest() {
+        vm.noteState.collectState(onLoading = {
 
+        }, onError = {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentFillingNotesBinding.inflate(layoutInflater)
-        return binding.root
-    }
+        }, onSucces = {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+        })
     }
 
 

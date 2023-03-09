@@ -1,41 +1,49 @@
 package com.example.note.presentaion.notes
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.example.note.data.base.BaseViewModel
 import com.example.note.domain.model.Note
+import com.example.note.domain.usecase.CreateNoteUseCase
+import com.example.note.domain.usecase.DeleteNoteUseCase
+import com.example.note.domain.usecase.EditNoteUseCase
 import com.example.note.domain.usecase.GetAllNoteUseCase
-import com.example.note.domain.utils.ResultStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val getAllNoteUseCase: GetAllNoteUseCase,
-) : ViewModel() {
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val editNoteUseCase: EditNoteUseCase,
+    private val createNoteUseCase: CreateNoteUseCase
+) : BaseViewModel() {
     private val _noteState = MutableStateFlow<UiState<List<Note>>>(UiState.Empty())
     val noteState = _noteState.asStateFlow()
 
-    fun getAllNotes() {
-        viewModelScope.launch {
-            getAllNoteUseCase.getAllNotes().collect {
-                when (it) {
-                    is ResultStatus.Error -> {
-                        _noteState.value = UiState.Error(it.error)
-                    }
-                    is ResultStatus.Loading -> {
-                        _noteState.value = UiState.Loading()
-                    }
-                    is ResultStatus.Succes -> {
-                        if (it.data != null)
-                            _noteState.value = UiState.Succes(it.data)
+    private val _deleteNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
+    val deleteNoteState = _deleteNoteState.asStateFlow()
 
-                    }
-                }
-            }
-        }
+    private val _editNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
+    val editNoteStade = _editNoteState.asStateFlow()
+
+    private val _createNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
+    val createNoteState = _createNoteState.asStateFlow()
+
+    fun getAllNotes() {
+        getAllNoteUseCase().collectFlow(_noteState)
+    }
+
+    fun delete(note: Note) {
+        deleteNoteUseCase(note).collectFlow(_deleteNoteState)
+    }
+
+    fun editNotes(note: Note) {
+        editNoteUseCase(note).collectFlow(_editNoteState)
+    }
+
+    fun createNotes(note: Note) {
+        createNoteUseCase(note).collectFlow(_createNoteState)
     }
 
 }

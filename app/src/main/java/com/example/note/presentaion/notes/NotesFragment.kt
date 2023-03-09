@@ -1,55 +1,30 @@
 package com.example.note.presentaion.notes
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.note.R
+import com.example.note.data.base.BaseFragment
 import com.example.note.databinding.FragmentNotesBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
-class NotesFragment : Fragment(R.layout.fragment_notes) {
+class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>() {
+    override val vm: NotesViewModel by viewModels()
 
-    private val viewModel: NotesViewModel by viewModels()
-    private lateinit var binding: FragmentNotesBinding
+    override val binding: FragmentNotesBinding = FragmentNotesBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = FragmentNotesBinding.bind(view)
+    override fun setupRequest() {
+        vm.noteState.collectState(onLoading = {
 
-        val meneger = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.recycler.layoutManager = meneger
+        }, onError =  {
 
-        listeners()
+        }, onSucces =  {
+
+        })
     }
 
-    private fun listeners() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.noteState.collect{
-                    when(it){
-                        is UiState.Empty -> {
-
-                        }
-                        is UiState.Error -> {
-
-                        }
-                        is UiState.Loading -> {
-
-                        }
-                        is UiState.Succes -> {
-
-                        }
-                    }
-                }
-            }
-        }
+    override fun listener() {
+        super.listener()
     }
 
+    override fun initialise() {
+        super.initialise()
+    }
 
 }
