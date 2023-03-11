@@ -2,17 +2,20 @@ package com.example.note.data.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.example.note.presentaion.notes.UiState
+import com.example.note.presentation.notes.UiState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@Suppress("UNUSED_EXPRESSION")
-abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(@LayoutRes layoutId: Int) :
+    Fragment(
+        layoutId
+    ) {
     protected abstract val vm: VM
     protected abstract val binding: VB
 
@@ -44,7 +47,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
                         is UiState.Loading -> {
                             onLoading()
                         }
-                        is UiState.Succes -> {
+                        is UiState.Success -> {
                             it.data?.let { it1 -> onSucces(it1) }
                         }
                     }

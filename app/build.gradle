@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -37,6 +38,7 @@ android {
         viewBinding true
     }
 
+
 }
 
 dependencies {
@@ -58,20 +60,28 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.0"
 
     //DI Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
+
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    implementation 'com.google.dagger:hilt-android:2.45'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.45'
 
     //Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     //lifeCycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-//viewModels()
+
+    //viewModels()
     implementation "androidx.fragment:fragment-ktx:1.5.5"
+
+    // reflection-based flavor
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.8'
 
     //navigation
     def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 
 }
