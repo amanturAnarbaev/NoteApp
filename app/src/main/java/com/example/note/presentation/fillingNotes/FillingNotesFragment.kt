@@ -27,11 +27,15 @@ class FillingNotesFragment :
                     titleET.text.toString(),
                     descriptionET.text.toString()
                 )
+
             }
+//            btn.setOnLongClickListener {
+//                vm.de
+//                false
+//            }
 
         }
     }
-
 
 
 
@@ -50,6 +54,20 @@ class FillingNotesFragment :
                 findNavController().navigate(R.id.action_fillingNotesFragment_to_notesFragment)
             }
         )
+//        vm.editNoteStade.collectState(
+//            onLoading = {
+//                binding.progressBar.isVisible = true
+//            },
+//            onError = {
+//                binding.progressBar.isVisible = false
+//                showToast(it)
+//            },
+//            onSucces = {
+//                binding.progressBar.isVisible = false
+//                showToast(getString(R.string.note_is_created))
+//                findNavController().navigate(R.id.action_fillingNotesFragment_to_notesFragment)
+//            }
+//        )
     }
 
 

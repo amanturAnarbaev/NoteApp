@@ -33,8 +33,6 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
     private fun onLongClick(note: Note) {
         vm.delete(note)
     }
-
-
     override fun setupRequest() {
         vm.noteState.collectState(onLoading = {
             binding.progressBar.isVisible = true
