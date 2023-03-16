@@ -15,21 +15,20 @@ import javax.inject.Inject
 class FillingNotesViewModel @Inject constructor(
     private val editNoteUseCase: EditNoteUseCase,
     private val createNoteUseCase: CreateNoteUseCase,
-    private val deleteNoteUseCase: DeleteNoteUseCase
+
 ) : BaseViewModel() {
 
-//    private val _editNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
-//    val editNoteStade = _editNoteState.asStateFlow()
+    private val _editNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
+    val editNoteStade = _editNoteState.asStateFlow()
 
     private val _createNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
     val createNoteState = _createNoteState.asStateFlow()
 
-    private val _deleteNoteState = MutableStateFlow<UiState<Unit>>(UiState.Empty())
-    val deleteNoteState = _deleteNoteState.asStateFlow()
+
 
 
     fun create(title: String, desc: String) {
-        if (title.isNotBlank() && title.isNotBlank()) {
+        if (title.isNotBlank() && desc.isNotBlank()) {
             createNoteUseCase(
                 Note(
                     title = title,
@@ -43,33 +42,17 @@ class FillingNotesViewModel @Inject constructor(
 
     }
 
-//    fun edit(title: String, desc: String) {
-//        if (title.isNotBlank() && desc.isNotBlank()) {
-//            editNoteUseCase(
-//                Note(
-//                    title = title,
-//                    description = desc,
-//                    createdAt = System.currentTimeMillis()
-//                )
-//            ).collectFlow(_editNoteState)
-//        } else {
-//            _editNoteState.value = UiState.Error(msg = "please write something in order to edit id")
-//        }
-//    }
-
-    fun delete(title: String = "", desc: String = "") {
-        if (title.isNotBlank() && desc.isNotBlank()) {
-            deleteNoteUseCase(
-                Note(
-                    title = title,
-                    description = desc,
-                    createdAt = 0.toLong()
-                )
-            )
+    fun update(note: Note) {
+        if (note.title.isNotBlank() && note.description.isNotBlank()) {
+            editNoteUseCase(
+                note
+            ).collectFlow(_editNoteState)
         } else {
-            _deleteNoteState.value =
-                UiState.Error(msg = "you want to delete something that does not exists")
+            _editNoteState.value = UiState.Error(msg = "fill the gaps")
         }
     }
+
+
+
 
 }

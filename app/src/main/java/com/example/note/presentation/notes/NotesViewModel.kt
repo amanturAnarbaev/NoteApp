@@ -1,5 +1,8 @@
 package com.example.note.presentation.notes
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import com.example.note.data.base.BaseViewModel
 import com.example.note.domain.model.Note
 import com.example.note.domain.usecase.CreateNoteUseCase
@@ -35,7 +38,6 @@ class NotesViewModel @Inject constructor(
     }
 
 
-
     private fun getAllNotes() {
         getAllNoteUseCase().collectFlow(_noteState)
     }
@@ -51,5 +53,30 @@ class NotesViewModel @Inject constructor(
     fun createNotes(note: Note) {
         createNoteUseCase(note).collectFlow(_createNoteState)
     }
+
+
+    fun showDialog(
+        context: Context, title: String,
+        negativeBtnClickListener: DialogInterface.OnClickListener?
+    ): AlertDialog {
+        val builder = AlertDialog.Builder(context)
+            .setTitle(title)
+            .setCancelable(true)
+
+        builder.setPositiveButton("Да", negativeBtnClickListener)
+        builder.setNegativeButton("нет", negativeBtnClickListener)
+        val alert = builder.create()
+        alert.show()
+        return alert
+    }
+
+    fun delete(position: Int, note: Note) {
+        if (note.title.isNotBlank() && note.description.isNotBlank() && position != -1) {
+            deleteNoteUseCase(note).collectFlow(_deleteNoteState)
+        } else {
+            _deleteNoteState.value = UiState.Error(msg = "you want to delete smth that does not")
+        }
+    }
+
 
 }

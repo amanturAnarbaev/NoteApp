@@ -14,7 +14,6 @@
             android:id="@+id/action_notesFragment_to_fillingNotesFragment"
             app:destination="@id/fillingNotesFragment" />
 
-
     </fragment>
     <fragment
         android:id="@+id/fillingNotesFragment"

@@ -7,16 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.note.databinding.ItemFillingNotesBinding
 import com.example.note.domain.model.Note
 
+@Suppress("DEPRECATION")
 class NotesAdapter(
-    private var list: ArrayList<Note>,
-    private val onItemClick: (Note) -> Unit,
-    private val onLongClick: (Note) -> Unit,
 
-    ) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+    private val onItemClick: (Note) -> Unit,
+    private val onLongClick: (Note, position: Int) -> Unit,
+) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+    private var list = mutableListOf<Note>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(notes: ArrayList<Note>) {
-        list = notes
+    fun updateList(notes: MutableList<Note>) {
+        list = (notes)
         notifyDataSetChanged()
     }
 
@@ -36,6 +37,15 @@ class NotesAdapter(
         return list.size
     }
 
+    fun deleteItem(position: Int) {
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun getPosition(position: Int): Note {
+        return list[position]
+    }
+
 
     inner class ViewHolder(private val binding: ItemFillingNotesBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -49,7 +59,7 @@ class NotesAdapter(
             }
 
             binding.root.setOnLongClickListener {
-                onLongClick.invoke(note)
+                onLongClick.invoke(note, position)
                 true
             }
         }

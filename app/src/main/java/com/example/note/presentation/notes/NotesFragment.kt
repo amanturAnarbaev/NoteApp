@@ -20,19 +20,27 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
 
     override val binding: FragmentNotesBinding by viewBinding(FragmentNotesBinding::bind)
 
-    private val list = ArrayList<Note>()
-    private val adapter by lazy { NotesAdapter(list, this::onItemClick, this::onLongClick) }
+    private val list = mutableListOf<Note>()
+    private val adapter by lazy { NotesAdapter(this::onItemClick, this::onLongClick) }
 
     private fun onItemClick(note: Note) {
+
         val bundle = bundleOf().apply {
             putSerializable(ARG_ADD_EDIT, note)
         }
         findNavController().navigate(R.id.action_notesFragment_to_fillingNotesFragment, bundle)
+
     }
 
-    private fun onLongClick(note: Note) {
-        vm.delete(note)
+
+    private fun onLongClick(note: Note, position: Int) {
+
+        vm.delete(position, note)
+        adapter.getPosition(position)
+        adapter.deleteItem(position)
+
     }
+
     override fun setupRequest() {
         vm.noteState.collectState(onLoading = {
             binding.progressBar.isVisible = true
@@ -41,8 +49,7 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
             showToast(it)
         }, onSucces = {
             binding.progressBar.isVisible = false
-            adapter.updateList(it as ArrayList<Note>)
-
+            adapter.updateList(it as MutableList<Note>)
         })
 
         vm.deleteNoteState.collectState(onLoading = {
@@ -51,9 +58,7 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
             binding.progressBar.isVisible = false
         }, onSucces = {
             binding.progressBar.isVisible = false
-
         })
-
 
         vm.createNoteState.collectState(onLoading = {
             binding.progressBar.isVisible = true
@@ -70,7 +75,6 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
             binding.progressBar.isVisible = false
         }, onSucces = {
             binding.progressBar.isVisible = false
-
         })
 
 
@@ -78,8 +82,10 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
 
     override fun listener() {
         binding.floatingActionButton2.setOnClickListener {
-            findNavController().navigate(NotesFragmentDirections.actionNotesFragmentToFillingNotesFragment())
+            findNavController().navigate(R.id.action_notesFragment_to_fillingNotesFragment)
         }
+
+
     }
 
     override fun initialise() {
@@ -94,5 +100,7 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
 
 
 }
+
+
 
 
