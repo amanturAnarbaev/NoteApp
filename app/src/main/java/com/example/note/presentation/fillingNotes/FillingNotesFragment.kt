@@ -33,7 +33,7 @@ class FillingNotesFragment :
                 if (note != null) {
                     vm.update(
                         note!!.copy(
-                            title = titleET.toString(),
+                            title = titleET.text.toString(),
                             description = descriptionET.text.toString()
                         )
                     )

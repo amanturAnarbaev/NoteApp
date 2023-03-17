@@ -34,9 +34,9 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
 
 
     private fun onLongClick(note: Note, position: Int) {
-
         vm.delete(position, note)
         adapter.getPosition(position)
+        //а тут я беру посицию что бы удалить item и я думал что надо логику через view model
         adapter.deleteItem(position)
 
     }
@@ -67,14 +67,6 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
         }, onSucces = {
             binding.progressBar.isVisible = false
 
-        })
-
-        vm.editNoteState.collectState(onLoading = {
-            binding.progressBar.isVisible = true
-        }, onError = {
-            binding.progressBar.isVisible = false
-        }, onSucces = {
-            binding.progressBar.isVisible = false
         })
 
 
