@@ -24,7 +24,6 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
     private val adapter by lazy { NotesAdapter(this::onItemClick, this::onLongClick) }
 
     private fun onItemClick(note: Note) {
-
         val bundle = bundleOf().apply {
             putSerializable(ARG_ADD_EDIT, note)
         }
@@ -58,6 +57,7 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
             binding.progressBar.isVisible = false
         }, onSucces = {
             binding.progressBar.isVisible = false
+
         })
 
         vm.createNoteState.collectState(onLoading = {
