@@ -20,5 +20,4 @@ plugins {
     id(Plugin.DaggerHilt.hilt) version Versions.DaggerHilt apply false
     id(Plugin.Kotlin.jwm) version Versions.kotlinJwm apply false
 
-
 }

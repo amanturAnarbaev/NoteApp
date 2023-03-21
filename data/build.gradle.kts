@@ -1,6 +1,6 @@
 plugins {
-    id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    id(Plugin.AGP.javaLibrary)
+    id(Plugin.AGP.jetbrainsKotlin)
 }
 
 java {
