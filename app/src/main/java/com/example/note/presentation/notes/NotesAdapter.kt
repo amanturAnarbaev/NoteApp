@@ -17,7 +17,7 @@ class NotesAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(notes: MutableList<Note>) {
-        list = (notes)
+        this.list = (notes)
         notifyDataSetChanged()
     }
 
@@ -37,9 +37,9 @@ class NotesAdapter(
         return list.size
     }
 
-    fun deleteItem(position: Int) {
-        list.removeAt(position)
+    fun deleteItem(position: Int): Note {
         notifyItemRemoved(position)
+        return list.removeAt(position)
     }
 
     fun getPosition(position: Int): Note {
@@ -52,6 +52,7 @@ class NotesAdapter(
         fun onBind(note: Note) {
             binding.description.text = note.description
             binding.title.text = note.title
+            binding.time.text = note.createdAt.toString()
 
             binding.root.setOnClickListener {
                 onItemClick.invoke(note)

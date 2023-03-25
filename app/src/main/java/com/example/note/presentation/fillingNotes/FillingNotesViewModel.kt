@@ -36,7 +36,6 @@ class FillingNotesViewModel @Inject constructor(
         } else {
             _createNoteState.value = UiState.Error(msg = "fill the gaps")
         }
-
     }
 
     fun update(note: Note) {

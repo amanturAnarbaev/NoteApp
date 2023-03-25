@@ -25,33 +25,6 @@ class FillingNotesFragment :
 
     }
 
-    override val binding: FragmentFillingNotesBinding by viewBinding(FragmentFillingNotesBinding::bind)
-
-    override fun listener() {
-        with(binding) {
-            btn.setOnClickListener {
-                if (note != null) {
-                    vm.update(
-                        note!!.copy(
-                            title = titleET.text.toString(),
-                            description = descriptionET.text.toString()
-                        )
-                    )
-                } else {
-                    vm.create(
-                        titleET.text.toString(),
-                        descriptionET.text.toString(),
-
-                        )
-
-                }
-            }
-
-        }
-
-    }
-
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initialise() {
         if (arguments != null) {
@@ -63,6 +36,32 @@ class FillingNotesFragment :
 
     }
 
+    override val binding: FragmentFillingNotesBinding by viewBinding(FragmentFillingNotesBinding::bind)
+
+    override fun listener() {
+
+        with(binding) {
+            btn.setOnClickListener {
+                if (note != null) {
+                    vm.update(
+                        note!!.copy(
+                            title = titleET.text.toString(),
+                            description = descriptionET.text.toString()
+                        )
+                    )
+                } else {
+                    vm.create(
+                        titleET.text.toString(), descriptionET.text.toString()
+                    )
+                    findNavController().navigate(R.id.action_notesFragment_to_fillingNotesFragment)
+
+                }
+            }
+        }
+
+    }
+
+
     private fun setData() {
         with(binding) {
             titleET.setText(note!!.title)
@@ -72,34 +71,26 @@ class FillingNotesFragment :
 
 
     override fun setupRequest() {
-        vm.createNoteState.collectState(
-            onLoading = {
-                binding.progressBar.isVisible = true
-            },
-            onError = {
-                binding.progressBar.isVisible = false
-                showToast(it)
-            },
-            onSucces = {
-                binding.progressBar.isVisible = false
-                showToast(getString(R.string.note_is_created))
-                findNavController().navigateUp()
-            }
-        )
-        vm.editNoteStade.collectState(
-            onLoading = {
-                binding.progressBar.isVisible = true
-            },
-            onError = {
-                binding.progressBar.isVisible = false
-                showToast(it)
-            },
-            onSucces = {
-                binding.progressBar.isVisible = false
-                showToast(getString(R.string.note_is_edited))
-                findNavController().navigateUp()
-            }
-        )
+        vm.createNoteState.collectState(onLoading = {
+            binding.progressBar.isVisible = true
+        }, onError = {
+            binding.progressBar.isVisible = false
+            showToast(it)
+        }, onSucces = {
+            binding.progressBar.isVisible = false
+            showToast(getString(R.string.note_is_created))
+            findNavController().navigateUp()
+        })
+        vm.editNoteStade.collectState(onLoading = {
+            binding.progressBar.isVisible = true
+        }, onError = {
+            binding.progressBar.isVisible = false
+            showToast(it)
+        }, onSucces = {
+            binding.progressBar.isVisible = false
+            showToast(getString(R.string.note_is_edited))
+            findNavController().navigateUp()
+        })
     }
 
 

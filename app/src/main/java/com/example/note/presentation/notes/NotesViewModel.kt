@@ -34,20 +34,6 @@ class NotesViewModel @Inject constructor(
     }
 
 
-//    fun showDialog(
-//        context: Context, title: String,
-//        negativeBtnClickListener: DialogInterface.OnClickListener?
-//    ): AlertDialog {
-//        val builder = AlertDialog.Builder(context)
-//            .setTitle(title)
-//            .setCancelable(true)
-//
-//        builder.setPositiveButton("Да", negativeBtnClickListener)
-//        builder.setNegativeButton("нет", negativeBtnClickListener)
-//        val alert = builder.create()
-//        alert.show()
-//        return alert
-//    }
 
     fun delete(position: Int, note: Note) {
         if (note.title.isNotBlank() && note.description.isNotBlank() && position != -1) {

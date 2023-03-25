@@ -4,6 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.note.R
 import com.example.note.data.base.BaseFragment
@@ -14,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layout.fragment_notes) {
+
+//    private lateinit var viewHolder: RecyclerView.ViewHolder
     override val vm: NotesViewModel by lazy {
         ViewModelProvider(requireActivity())[NotesViewModel::class.java]
     }
@@ -31,14 +34,13 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
 
     }
 
-
     private fun onLongClick(note: Note, position: Int) {
         vm.delete(position, note)
         adapter.getPosition(position)
-        //а тут я беру посицию что бы удалить item и я думал что надо логику через view model
-        adapter.deleteItem(position)
 
+        adapter.deleteItem(position)
     }
+
 
     override fun setupRequest() {
         vm.noteState.collectState(onLoading = {
@@ -56,6 +58,7 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
         }, onError = {
             binding.progressBar.isVisible = false
         }, onSucces = {
+            showToast(msg = "deleted")
             binding.progressBar.isVisible = false
 
         })
@@ -76,8 +79,6 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
         binding.floatingActionButton2.setOnClickListener {
             findNavController().navigate(R.id.action_notesFragment_to_fillingNotesFragment)
         }
-
-
     }
 
     override fun initialise() {
@@ -90,8 +91,8 @@ class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>(R.layou
         const val ARG_ADD_EDIT = "edit_notes"
     }
 
-
 }
+
 
 
 

@@ -88,7 +88,7 @@ object Versions {
     const val viewModelLC = versionOfLC
 
     //room
-    private const val versionOfRoom = "2.5.o"
+    private const val versionOfRoom = "2.5.0"
     const val roomRuntime = versionOfRoom
     const val room = versionOfRoom
     const val roomCompiler = versionOfRoom
